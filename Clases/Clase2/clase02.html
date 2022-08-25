@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 02</title>
+    <style>
+        h2 {
+            color: red;
+        }
+
+        .item {
+            color: green;
+        }
+
+        #titulo {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="titulo">Titulo</h1>
+    <h2>Subtitulo</h2>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Totam accusamus consequuntur iste laboriosam ut quam soluta repellendus amet doloremque. Consectetur.</p>
+    
+    <ul>
+        <li class="item">Item 01</li>
+        <li class="item">Item 02</li>
+        <li class="item">Item 03</li>
+        <li class="item">Item 04</li>
+        <li class="item">Item 05</li>
+    </ul>
+
+    <script>
+        // document.getElementById: Nodo (Object) || null
+        const titulo = document.getElementById('titulo');
+        console.log(titulo);
+        console.dir(titulo);
+
+        if (titulo) {
+            console.log(titulo.textContent);
+        }
+
+        // document.getElementsByClassName: HTMLCollection
+        const items = document.getElementsByClassName('item');
+        console.log(items);
+
+        // document.getElementsByTagName: HTMLCollection
+        const subtitulos = document.getElementsByTagName('h2');
+        console.log(subtitulos);
+
+
+        // document.querySelector: Nodo (Object) || null
+        const h1 = document.querySelector('#titulo');
+        console.log(h1);
+
+        const li = document.querySelectorAll('.item');
+        console.log(li);
+
+
+        console.log(h1.textContent);
+        h1.textContent = 'Nuevo Titulo';
+
+        // h1.textContent = 'Nuevo <em>titulo</em>';
+        h1.innerHTML = 'Nuevo <em>titulo</em>';
+
+
+
+        let numero = 1;
+        let nulo = null;
+        let indefinida = undefined;
+        let cadena = 'string';
+        let booleano = true; // false
+
+        let variable;
+
+        // console.log(uno);
+        // let uno = 1;
+
+        cadena = 'cadena';
+        console.log(cadena);
+
+        const pi = 3.14;
+
+        const array = [];
+        const objeto = {};
+
+        //--------------
+        // const nombre = prompt('Ingrese su nombre');
+        // alert('Bienvenido ' + nombre);
+        //--------------
+
+        // var global = 'global';
+
+        // function a () {
+        //     var local = 'local';
+
+        //     console.log('Adentro local', local);
+        //     console.log('Adentro global', global);
+        // }
+
+        // a();
+
+        // console.log('Afuera global', global);
+        // console.log('Afuera local', local);
+
+
+        // let global = 'global';
+
+        // function a () {
+        //     let local = 'local';
+
+        //     console.log('Adentro local', local);
+        //     console.log('Adentro global', global);
+        // }
+
+        // a();
+
+        // console.log('Afuera global', global);
+        // console.log('Afuera local', local);
+
+
+        // let global = 'global';
+
+        // if (true) {
+        //     let local = 'local';
+
+        //     console.log('Adentro local', local);
+        //     console.log('Adentro global', global);
+        // }
+
+        // console.log('Afuera global', global);
+        // console.log('Afuera local', local);
+
+        // for (let i = 0; i < 10; i++) {
+        //     console.log(i);
+        // }
+
+        // console.log(i);
+
+
+        // function saludar (n, a) {
+        //     alert(`Hola ${n} ${a}`);
+        // }
+
+        // const nombre = prompt('Ingrese su nombre');
+        // const apellido = prompt('Ingrese su apellido');
+
+        // saludar(nombre, apellido);
+
+
+        // function sumar (a, b) {
+        //     if (a !== undefined && b !== undefined) {
+        //         return a + b;
+        //     } else {
+        //         return 0;
+        //     }
+        // }
+
+        // function sumar (a, b) {
+        //     if (a !== undefined && b !== undefined) {
+        //         return a + b;
+        //     }
+            
+        //     return 0;
+        // }
+
+        // const suma = sumar(10, 5);
+        // console.log(`La suma de 10 + 5 es: ${suma}`);
+
+        // const s = function () {
+        //     alert('Hola');
+        // }
+
+        // const saludar = () => {
+        //     alert('Hola');
+        // }
+
+        // saludar();
+
+        // const saludar = (nombre) => {
+        //     alert(`Hola ${nombre}`);
+        // }
+
+        // saludar('jonathan');
+
+        // const saludar = (nombre, apellido) => {
+        //     alert(`Hola ${nombre} ${apellido}`);
+        // }
+
+        // saludar('jonathan', 'm');
+
+        // const sumar = (a, b) => {
+        //     if (a !== undefined && b !== undefined) {
+        //         return a + b;
+        //     }
+            
+        //     return 0;
+        // }
+
+        // const sumar = (a, b) => a + b;
+        // console.log(sumar(5, 7));
+
+        // const multilplicarPorTres = a => a * 3;
+        // console.log(multilplicarPorTres(10));
+
+
+        // function cambiar (numero) {
+        //     numero = 10;
+        // }
+
+        // let n = 1;
+        // cambiar(n);
+        // console.log(n); // 1
+
+        // let uno = 1;
+        // let dos = 2;
+        // let tres = uno; // <-- asignando el valor 1
+
+        // console.log(tres); // 1
+        // uno = 10;
+
+        // console.log(uno); // 10
+        // console.log(tres); // 1
+        // tres = 11;
+        
+        // console.log(tres); // 11
+        // console.log(uno); // 10
+
+
+        // function cambiar (vector) {
+        //     vector[0] = 100;
+        // }
+
+        // let n = [1, 2, 3];
+        // cambiar(n);
+        // console.log(n); // [100, 2, 3]
+
+
+        // const vectorUno = [1, 2, 3];
+        // const vectorDos = [1, 2, 3];
+        // const vectorTres = vectorUno; // <----
+
+        // console.log(vectorUno === vectorDos); // false
+        // console.log(vectorUno === vectorTres); // true
+    </script>
+</body>
+</html>
