@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 03 - Eventos</title>
+</head>
+<body>
+
+    <!-- <button id="boton" onclick="alert('hola');">Click</button> -->
+    <button id="boton">Click</button>
+
+    <!-- <script>
+        const boton = document.getElementById('boton');
+
+        boton.onclick = function () {
+            console.log('algo');
+        }
+    </script>
+
+    <script>
+        const btn = document.getElementById('boton');
+
+        btn.onclick = function () {
+            console.log('guardar info');
+        }
+    </script> -->
+
+    <script>
+        const boton = document.getElementById('boton');
+
+        boton.addEventListener('click', () => {
+            console.log('algo');
+        });
+    </script>
+
+    <script>
+        const btn = document.getElementById('boton');
+
+        btn.addEventListener('click', () => {
+            console.log('guardar info');
+        });
+    </script>
+</body>
+</html>

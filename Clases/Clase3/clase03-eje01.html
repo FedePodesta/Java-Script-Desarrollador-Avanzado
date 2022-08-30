@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--
+        En HTML data-background-color="yellow"
+        En JS elemento.dataset.backgroundColor
+    -->
+
+    <button data-color="red" class="btn">Cambiar Fondo a Rojo</button>
+    <button data-color="blue" class="btn">Cambiar Fondo a Azul</button>
+    <button data-color="green" class="btn">Cambiar Fondo a Verde</button>
+    <button data-color="pink" class="btn">Cambiar Fondo a Rosa</button>
+    <button data-color="black" class="btn">Cambiar Fondo a Negro</button>
+
+    <script>
+        const botones = document.querySelectorAll('.btn');
+
+        botones.forEach(function (boton) {
+            boton.addEventListener('click', function () {
+                document.body.style.backgroundColor = boton.dataset.color;
+            });
+        });
+
+        // const numeros = [1, 2, 3, 4];
+
+        // for (let i = 0;  i < numeros.length; i++) {
+        //     console.log(numeros[i]);
+        // }
+
+        // numeros.forEach(function (item, i, array) {
+        //     console.log('item', item);
+        //     console.log('i', i);
+        //     console.log('array', array);
+        //     console.log('============')
+        // });
+
+        // numeros.forEach(function (item) {
+        //     console.log(item);
+        // });
+
+        // numeros.forEach(item => console.log(item));
+
+        // function mostrarNumero(item) {
+        //     console.log(item);
+        // }
+
+        // const numeros = [100, 200, 300, 400];
+
+        // for (let i = 0; i < numeros.length; i++) {
+        //     mostrarNumero(numeros[i]);
+        // }
+
+        // numeros.forEach(item => {
+        //     mostrarNumero(item);
+        // });
+
+        // numeros.forEach(mostrarNumero);
+    </script>
+
+    <!-- <script>
+        const rojo = document.getElementById('rojo');
+        const azul = document.getElementById('azul');
+        const verde = document.getElementById('verde');
+
+        rojo.addEventListener('click', () => {
+            document.body.style.backgroundColor = 'red';
+        });
+
+        azul.addEventListener('click', () => {
+            document.body.style.backgroundColor = 'blue';
+        });
+
+        verde.addEventListener('click', () => {
+            document.body.style.backgroundColor = 'green';
+        });
+    </script> -->
+</body>
+</html>

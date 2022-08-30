@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 03</title>
+    <style>
+        .titulo {
+            border: 1px solid black;
+            background-color: green;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="titulo">Titulo</h1>
+    <h2>Subtitulo</h2>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Totam accusamus consequuntur iste laboriosam ut quam soluta repellendus amet doloremque. Consectetur.</p>
+    
+    <ul>
+        <li class="item">Item 01</li>
+        <li class="item">Item 02</li>
+        <li class="item">Item 03</li>
+        <li class="item">Item 04</li>
+        <li class="item">Item 05</li>
+    </ul>
+
+    <script>
+        // document.getElementById: Nodo (Object) || null
+        const titulo = document.getElementById('titulo');
+        console.log(titulo);
+        console.dir(titulo);
+
+        if (titulo) {
+            console.log(titulo.textContent);
+        }
+
+        // document.getElementsByClassName: HTMLCollection
+        const items = document.getElementsByClassName('item');
+        console.log(items);
+
+        // document.getElementsByTagName: HTMLCollection
+        const subtitulos = document.getElementsByTagName('h2');
+        console.log(subtitulos);
+
+
+        // document.querySelector: Nodo (Object) || null
+        const h1 = document.querySelector('#titulo');
+        console.log(h1);
+
+        const li = document.querySelectorAll('.item');
+        console.log(li);
+
+
+        console.log(h1.textContent);
+        h1.textContent = 'Nuevo Titulo';
+
+        // h1.textContent = 'Nuevo <em>titulo</em>';
+        h1.innerHTML = 'Nuevo <em>titulo</em>';
+
+        // h1.style.color = 'red';
+        // h1.style.backgroundColor = 'yellow';
+
+        // h1.className = 'titulo';
+
+        h1.classList.add('titulo');
+    </script>
+</body>
+</html>
