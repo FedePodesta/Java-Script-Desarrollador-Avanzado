@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 04</title>
+</head>
+<body>
+    <main id="root"></main>
+    
+    <script>
+        const root = document.getElementById('root');
+        
+        const titulo = 'Bienvenidos';
+        const subtitulo = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Est quia cumque necessitatibus ipsam voluptates laudantium ullam velit ex distinctio amet?';
+
+        // root.innerHTML = `
+        //     <h1>${titulo}</h1>
+        //     <h2>${subtitulo}</h2>
+        //     <ul>
+        //         <li>Item</li>
+        //     </ul>
+        // `;
+
+        const h1 = document.createElement('h1');
+        h1.textContent = titulo;
+
+        const h2 = document.createElement('h2');
+        h2.textContent = subtitulo;
+
+        const ul = document.createElement('ul');
+
+        const li = document.createElement('li');
+        li.textContent = 'Item';
+
+        ul.appendChild(li); // <ul><li>Item</li></ul>
+
+        root.append(h1, h2, ul);
+    </script>
+</body>
+</html>

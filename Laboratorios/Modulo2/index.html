@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<style>
+		header{
+			height: 60px;
+			position: relative;
+		}
+		header button{
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			left: 16px;
+			z-index: 9;
+			border: none;
+			background: transparent;
+		}
+		#drawer{
+			width: 25%;
+			height: 100%;
+			position: fixed;
+			top: 0;
+			left: -30%;
+			box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		a{
+			color: black;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<nav id="drawer">
+		<a href="link1">link 1</a>
+		<a href="link2">link 2</a>
+		<a href="link3">link 3</a>
+	</nav>
+	<header>
+		<button class="material-icons">menu</button>
+	</header>
+	<button id="error">Click!</button>
+	<article>
+		
+	</article>
+    <style>
+        form{
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            padding: 1rem;
+            background-color: white;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0,0.3);
+        }
+        fieldset{
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        legend{
+            margin: auto;
+            padding: 0 1rem;
+        }
+        .group{
+            position: relative;
+            height: 30px;
+            margin: 2rem 0;
+        }
+        .group label{
+            z-index: 1;
+            background-color: white;
+            height: 20px;
+            transition: all 0.3s ease;
+        }
+        .group label,.group input,.group textarea{
+            position: absolute;
+            width: 100%;
+            resize: none;
+            border: none;
+            bottom: 0;
+        }
+        .group::after{
+            content: "";
+            position: absolute;
+            width: 0%;
+            border-bottom: 2px solid black;
+            bottom: -5px;
+            transition: all 0.3s ease;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    
+        .group input:active,.group input:focus,.group textarea:active,.group textarea:focus{
+            outline: none;
+        }
+    
+        .animacionBorde::after{
+            width: 100%;
+        }
+    
+        .subir{
+            top: -20px;
+            font-size: 14px;
+            color: grey;
+        }
+    
+    </style>
+    <form>
+        <fieldset>
+            <legend>Usuario</legend>
+            <div class="group">
+                <label for="nombre">Nombre</label>
+                <input id="nombre" type="text" placeholder="Nombre de usuario">
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Datos del mensaje</legend>
+            <div class="group">
+                <label for="titulo">Titulo</label>
+                <input id="titulo" type="text" placeholder="Titulo">
+            </div>
+            <div class="group">
+                <label for="mensaje">Mensaje</label>
+                <textarea id="mensaje"></textarea>
+            </div>
+        </fieldset>
+        <button>Comentar!</button>
+    </form>
+    <ul>
+        
+    </ul>
+	<script>
+		const textos = {
+			"link1" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
+			"link2" : "Vitae voluptates, animi illum cum repellendus adipisci nulla, ipsam natus rem pariatur excepturi dolores consequatur nisi eos",
+			"link3" : "Maiores maxime placeat nam necessitatibus."
+		}
+		alert("Se ha detectado un virus. Dirigase a la consola de desarrollo para investigar el problema!");
+		let btn_error = document.querySelector("#error")
+		btn_error.addEventListener("click",function(e){
+
+		},true)
+
+		document.addEventListener("click",function(e){
+			throw new Error("Se ha detectado un nuevo virus!. El mismo puede desactivarse si el evento click del boton#error no se propaga.")
+		},true)
+
+		//1) Asignarle un evento de click al boton hamburguesa para que pueda ser capaz de abrir y cerrar el nav #drawer
+		//2) Asignarle un evento de click a los links del nav #drawer para que sean capaces de buscar dentro del objeto "textos" el texto correspondiente a su seccion y poder mostrarla en el <article>
+		//3)El objeto global window tiene un evento llamado resize. Este evento se dispara cada vez que el navegador cambia de tamaño, es decir, cuando se minimiza o maximiza. Asignarle un evento que sea capaz de cambiarle el color de fonto al body por rojo si estamos a mas de 600px y azul si estamos a menos.
+		//Bonus
+		//4)Refactorizar el codigo del punto 2 para que los links tambien puedan cerrar el drawer
+		//5)Utilizar la plantilla del archivo formulario.html y pegarlo entre el <article> y el <script>. Asignarle un evento al formulario para que sea capaz de capturar los valores de sus inputs de manera dinámica SIN usar querySelectors para construir un listado de comentarios de usuarios dentro del <ul>. Cada item deberá tener el nombre del usuario, titulo y cuerpo del comentario. 
+	</script>
+</body>
+</html>

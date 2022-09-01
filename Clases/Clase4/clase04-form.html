@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 04 - Form</title>
+    <style>
+        input:valid {
+            border: 2px solid green;
+        }
+
+        input:invalid {
+            border: 2px solid red;
+        }
+
+        .error {
+            font-size: 12px;
+            display: none;
+            color: red;
+        }
+
+        input:invalid + .error {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <form id="form" action="enviar.php" method="get" novalidate>
+        <div>
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <span class="error">El nombre es obligatorio</span>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+            <span class="error">Debe ingresar un email</span>
+        </div>
+        <div>
+            <label for="edad">Edad</label>
+            <input type="number" id="edad" name="edad" min="1" max="100">
+            <span class="error">La edad debe ser un numero entre 1 y 100</span>
+        </div>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <!-- <a href="https://educacionit.com" target="_blank">EducacionIT</a> -->
+
+    <script>
+        // const link = document.querySelector('a');
+        // link.addEventListener('click', e => {
+        //     e.preventDefault();
+        //     alert('CLICK');
+        // });
+
+        const form = document.getElementById('form');
+        const nombre = document.getElementById('nombre');
+        const email = document.getElementById('email');
+        const edad = document.getElementById('edad');
+
+        form.addEventListener('submit', e => {
+            let error = false;
+
+
+            /*
+                X | && | Y
+                ----------
+                V | V  | V
+                F | F  | V
+                V | F  | F
+                F | F  | F
+
+
+            */
+            
+            // Nombre obligatorio
+            if (!nombre.value) { // nombre.value === ''
+                error = true;
+            }
+
+            // Edad entre 1 y 100
+            if (!(edad.value >= 1 && edad.value <= 100)) { // edad.value < 1 || edad.value > 100
+                error = true;
+            }
+
+            // Email:   xxxxxx@yyyyyy.xxx        {letras}@{letras}.{letras#3}
+            //          xxxxxx@yyyyyy.xxx.yy     {letras}@{letras}.{letras#3}.{letras#2}
+
+
+            if (!email.value.includes('@')) {
+                alert('Debe escribir un @');
+                error = true;
+            } else {
+               const split = email.value.split('@');
+               
+                if (split.length !== 2) {
+                    alert('Hay mas de 1 @');
+                    error = true;
+                } else {
+                    if (!split[0]) {
+                        alert('Debe ingresar algo antes del @');
+                        error = true;
+                    } else {
+                        if (!split[1]) {
+                            alert('Debe ingresar algo despues del @');
+                            error = true;
+                        } else {
+                            // split (const puntos = split[1].split('.')) chequear length sea 2 o 3
+                            // puntos[0] !== "" / puntos[1] !== "" puntos[1].length === 3
+                            // puntos[2] !== "" / puntos[2].length === 2
+                        }
+                    }
+                }
+            }
+
+
+            if (error) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

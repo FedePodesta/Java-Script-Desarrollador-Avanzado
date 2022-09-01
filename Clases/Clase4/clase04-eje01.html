@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 04</title>
+    <style>
+        #botones {
+            border: 1px solid black;
+            padding: 20px;
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <h1>Titulo</h1>
+    <h2>Subtitulo</h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet similique sit a minus, animi odit sint nemo eaque veniam dolorum!</p>
+
+    <div id="botones">
+        <button data-propiedad="backgroundColor" data-value="red">Cambiar el background-color: red</button>
+        
+        <button data-propiedad="backgroundColor" data-value="black">Cambiar el background-color: black</button>
+        
+        <button data-propiedad="color" data-value="yellow">Cambiar el color: yellow</button>
+        
+        <button data-propiedad="color" data-value="red">Cambiar el color: red</button>
+        
+        <button data-propiedad="textAlign" data-value="center">Cambiar el text-align: center</button>
+        
+        <button data-propiedad="textAlign" data-value="right">Cambiar el text-align: right</button>
+    </div>
+
+    <script>
+        const botones = document.getElementById('botones');
+
+        // botones.addEventListener('click', e => {
+        //     if (e.target.id !== 'botones') {
+        //         document.body.style[e.target.dataset.propiedad] = e.target.dataset.value;
+        //     }
+        // });
+
+        function cambiarCSS (e) {
+            if (e.target.id !== 'botones') {
+                document.body.style[e.target.dataset.propiedad] = e.target.dataset.value;
+            }
+        }
+
+        botones.addEventListener('click', cambiarCSS);
+    </script>
+</body>
+</html>
