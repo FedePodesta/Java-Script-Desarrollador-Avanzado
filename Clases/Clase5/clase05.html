@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 05 - Async</title>
+</head>
+<body>
+    <div id="reloj"></div>
+    
+    <script>
+
+        function mostrarHora() {
+            const d = new Date();
+
+            const horas = d.getHours();
+            const minutos = d.getMinutes();
+            const segundos = d.getSeconds();
+
+            return `${horas}:${minutos}:${segundos}`;
+        }
+
+        const reloj = document.getElementById('reloj');
+
+        // while (true) {
+        //     reloj.textContent = mostrarHora();
+        // }
+
+        setInterval(() => {
+            reloj.textContent = mostrarHora();
+        }, 1000);
+        
+
+        // console.log('Inicio');
+
+        // const numeroUno = 10;
+        // const numeroDos = 20;
+
+        // const suma = numeroUno + numeroDos;
+        // console.log(suma);
+
+        // for (let i = 0; i < 1000; i++) {
+        //     console.log('for');
+        // }
+
+        // console.log('Fin');
+
+        // console.log('Inicio');
+
+        // // 1000 = 1 segundo
+
+        // setTimeout(function () {
+        //     console.log('Timeout');
+        // }, 0);
+
+        // console.log('Fin');
+    </script>
+</body>
+</html>

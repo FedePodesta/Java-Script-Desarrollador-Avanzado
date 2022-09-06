@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 05</title>
+    <style>
+        .error {
+            display: none;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <form id="form" action="enviar.php" method="get">
+        <div>
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <span class="error"></span>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <span class="error"></span>
+        </div>
+        <div>
+            <label for="edad">Edad</label>
+            <input type="number" id="edad" name="edad" min="1" max="100" required>
+            <span class="error"></span>
+        </div>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('form');
+        const nombre = document.getElementById('nombre');
+        const email = document.getElementById('email');
+        const edad = document.getElementById('edad');
+
+        nombre.setCustomValidity('Debe ingresar un nombre');
+        email.setCustomValidity('Debe ingresar un email');
+        edad.setCustomValidity('Debe ingresar su edad (entre 1 y 100)');
+
+        nombre.addEventListener('input', e => {
+            console.log('Input: ', e.target.value)
+            if (!nombre.validity.valueMissing) {
+                nombre.setCustomValidity('');
+            } else {
+                nombre.setCustomValidity('Debe ingresar un nombre');
+                nombre.reportValidity();
+            }
+        })
+
+        form.addEventListener('submit', e => {
+            let error = false;
+
+            if (!nombre.validity.valid) {
+                error = true;
+            }
+
+            if (!email.validity.valid) {
+                error = true;
+            }
+
+            if (!edad.validity.valid) {
+                error = true;
+            }
+
+            if (error) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
