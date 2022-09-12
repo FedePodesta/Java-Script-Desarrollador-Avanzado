@@ -1,0 +1,87 @@
+<!--
+    Formulario de Login (Inicio de Sesión)
+
+    Validaciónes de este formulario
+
+    1. Validación del FORMATO
+        - Que se hayan pasado los datos
+        - Que el nombre de usuario tenga más de 3 letras
+        - Que la contraseña tenga más de 3 letras, menos de 8 y tenga números y letras
+
+    2. Validación de las CREDENCIALES
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 3 - Práctica de Eventos</title>
+</head>
+
+<body>
+    <!-- Estado de Validación del Formulario - Depende de los estados de validación del campo -->
+    <form action="http://google.com" method="" id="frmLogin"> 
+        <div>
+            Usuario:
+            <!-- Estado de Validación del Campo -->
+            <input type="text" name="usuario" id="usuario"> 
+        </div>
+
+        <div>
+            Contraseña:
+            <input type="password" name="clave" id="clave">
+        </div>
+
+        <div>
+            <input type="checkbox" name="recuerdame" id="recuerdame">
+            Recuerdame
+            <!--¿Quieres deshacerte de esta traba cuando vuelvas a acceder acá?-->
+        </div>
+
+        <div>
+            <button id="iniciarSesion">Iniciar sesión</button>
+        </div>
+    </form>
+
+    <a href="http://google.com" id="Confirmar">Ir a google</a>
+
+    <script>
+
+        const CampoRequerido = function(selector)
+        {
+            let isValid = false;
+
+            const elemento = document.querySelector(selector);
+
+            // 1. Registrar los eventos de validación
+            elemento.addEventListener('blur', function(){
+                isValid = elemento.value.length !== 0;
+            });
+
+            // 2. Proveer el estado actual de dicho campo
+            function getState() { return isValid; }
+
+            elemento.isValid = getState;
+
+            return elemento;
+        }
+
+    </script>
+    <script>
+        const usuario = CampoRequerido('#usuario');
+        const clave = CampoRequerido('#clave');
+
+        document.querySelector('#frmLogin').addEventListener('submit', function(e){
+            e.preventDefault();
+
+            if(
+                usuario.isValid() &&
+                clave.isValid()
+            )
+                document.querySelector('#frmLogin').submit();
+        });
+        
+    </script>
+</body>
+</html>

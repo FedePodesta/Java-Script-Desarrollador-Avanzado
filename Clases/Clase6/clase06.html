@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 06</title>
+</head>
+<body>
+    
+    <script>
+        const xhr = new XMLHttpRequest();
+
+        // xhr.open('get', 'https://jsonplaceholder.typicode.com/users');
+
+        // xhr.open('get', 'https://almundo.com.ar/hotels/results/api/search/new716?id=new716&name=buenos%20aires&brand=almundo&date=2022-10-15,2022-10-18&featuredHotelId=&priceBy=NIGHT&rooms=2&type=CITY&url=/hotels/results/buenos-aires-new716?brand=almundo%26date=2022-10-15,2022-10-18%26featuredHotelId=%26priceBy=NIGHT%26rooms=2%26type=CITY&isLanding=false');
+
+        // CORS
+
+        xhr.open('get', 'https://jsonplaceholder.typicode.com/users');
+
+        xhr.responseType = 'json';
+
+        // xhr.addEventListener('load', e => {
+        //     const usuarios = JSON.parse(xhr.response);
+        //     // console.log(typeof xhr.response);
+        //     // console.log('Load', xhr.response[0]);
+        //     console.log('Load', usuarios[0]);
+        // });
+
+        xhr.addEventListener('load', e => {
+            if (xhr.status === 200) {
+                console.log('Load', xhr.response[0]);
+            } else {
+                console.log('Load (Error)')
+            }
+        });
+
+        xhr.addEventListener('error', e => {
+            console.log('Error');
+        });
+
+        xhr.send();
+    </script>
+</body>
+</html>
