@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 09</title>
+    <style>
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+            }
+            .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #fff;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #fff transparent transparent transparent;
+            }
+            .lds-ring div:nth-child(1) {
+            animation-delay: -0.45s;
+            }
+            .lds-ring div:nth-child(2) {
+            animation-delay: -0.3s;
+            }
+            .lds-ring div:nth-child(3) {
+            animation-delay: -0.15s;
+            }
+            @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+            }
+
+
+        .negrita {
+            font-weight: bold;
+        }
+
+        .usuario {
+            border: 1px solid black;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;;
+        }
+
+        .btn {
+            height: 40px;
+            width: 120px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .btn-ok {
+            background-color: rgb(3, 197, 3);
+        }
+
+        .btn-ok:hover {
+            background-color: rgb(2, 120, 2);
+        }
+
+        .btn-cancel {
+            background-color: rgb(244, 153, 153);
+        }
+
+        .btn-cancel:hover {
+            background-color: rgb(248, 61, 61);
+        }
+
+        #modal {
+            display: none;
+            position: fixed;
+            top: 200px;
+            left: calc(50% - 200px);
+            width: 400px;
+        }
+
+        #modal #close {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            cursor: pointer;
+            line-height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        #modal #close:hover {
+            background-color: orange;
+        }
+
+        #modal #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        #modal #modal-contenido {
+            position: relative;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 20px;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        input {
+            display: block;
+            height: 30px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 15px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        #loader .lds-ring {
+            position: absolute;
+            top: calc(50% - 40px);
+            left: calc(50% - 40px);
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        #form {
+            display: none;
+            border: 1px solid black;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #home {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="home">
+        <button class="btn btn-ok" id="btn-crear">Crear Usuario</button>
+
+        <div id="listado-usuarios"></div>
+    </div>
+
+    <div id="modal">
+        <span id="close">X</span>
+        <div id="background"></div>
+        <div id="modal-contenido"></div>
+    </div>
+
+    <div id="form">
+        <div>
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+        </div>
+        <div>
+            <label for="telefono">Telefono</label>
+            <input type="tel" name="telefono" id="telefono">
+        </div>
+        <div>
+            <label for="web">Web</label>
+            <input type="url" name="web" id="web">
+        </div>
+        <button class="btn btn-ok" id="btn-guardar">Guardar</button>
+        <button class="btn btn-cancel" id="btn-cancelar">Cancelar</button>
+    </div>
+    
+    <div id="loader">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('modal');
+        const close = document.getElementById('close');
+        const background = document.getElementById('background');
+        const modalContenido = document.getElementById('modal-contenido');
+        const loader = document.getElementById('loader');
+        const home = document.getElementById('home');
+        const form = document.getElementById('form');
+        const btnGuardar = document.getElementById('btn-guardar');
+        const btnCancelar = document.getElementById('btn-cancelar');
+        const btnCrear = document.getElementById('btn-crear');
+
+        const nombre = document.getElementById('nombre');
+        const email = document.getElementById('email');
+        const telefono = document.getElementById('telefono');
+        const web = document.getElementById('web');
+
+        const listadoUsuarios = document.getElementById('listado-usuarios');
+
+        const estado = {
+            usuarios: null
+        };
+
+        function cargarFormulario(id) {
+            nombre.value = '';
+            email.value = '';
+            telefono.value = '';
+            web.value = '';
+
+            if (id) {
+                realizarPeticion(
+                    'get',
+                    `https://jsonplaceholder.typicode.com/users/${id}`,
+                    usuario => {
+                        nombre.value = usuario.name;
+                        email.value = usuario.email;
+                        telefono.value = usuario.phone;
+                        web.value = usuario.website;
+                    }
+                    , handleError
+                );
+            }
+        }
+
+        function mostrarOcultar() {
+            console.log('mostrarOcultar')
+            const pathname = location.pathname.split('/');
+
+            home.classList.remove('show');
+            form.classList.remove('show');
+
+            switch(pathname[1]) {
+                case 'home':
+                    realizarPeticion('get', 'https://jsonplaceholder.typicode.com/users', mostrarUsuarios, handleError);
+                    home.classList.add('show');
+                    break;
+                case 'crear':
+                    cargarFormulario();
+                    form.classList.add('show');
+                    break;
+                case 'modificar':
+                    cargarFormulario(pathname[2]);
+                    form.classList.add('show');
+                    break;
+            }
+        }
+
+        function showLoader(show) {
+            if (show) {
+                loader.classList.add('show');
+            } else {
+                loader.classList.remove('show');
+            }
+        }
+
+        function showForm(show) {
+            if (show) {
+                form.classList.add('show');
+                listadoUsuarios.classList.add('hide');
+                btnCrear.classList.add('hide');
+            } else {
+                form.classList.remove('show');
+                listadoUsuarios.classList.remove('hide');
+                btnCrear.classList.remove('hide');
+            }
+        }
+
+        function realizarPeticion(metodo, url, handleOk, handleError, datos) {
+            const xhr = new XMLHttpRequest();
+
+            showLoader(true);
+
+            xhr.open(metodo, url);
+
+            xhr.responseType = 'json';
+
+            xhr.addEventListener('load', e => {
+                if (xhr.status >= 200 && xhr.status <= 299) {
+                    console.log(xhr);
+                    handleOk(xhr.response);
+                } else {
+                    handleError(xhr.status);
+                }
+                showLoader(false);
+            });
+
+            xhr.addEventListener('error', e => {
+                handleError('Error');
+                showLoader(false);
+            });
+
+            xhr.send(JSON.stringify(datos));
+        }
+
+        function handleError(error) {
+            alert(error);
+        }
+
+        function mostrarUsuarios(usuarios) {
+            estado.usuarios = usuarios;
+            usuarios.forEach(mostrarUsuario)
+        }
+
+        function eliminarUsuario() {
+            const article = document.getElementById(`usuario-${estado.usuarioEliminado}`);
+
+            if (article) {
+                article.remove();
+            }
+        }
+
+        function ocultarModal() {
+            modal.classList.remove('show');
+        }
+
+        function handleEliminar(event) {
+            const id = parseInt(event.target.parentNode.id.split('-')[1]);
+            const usuario = estado.usuarios.find(u => u.id === id);
+
+            modalContenido.innerHTML = `
+                <h3>¿Esta seguro que desea eliminar el usuario ${usuario.name}?</h3>
+            `;
+
+            const btnCancelar = document.createElement('button');
+            btnCancelar.className = 'btn btn-cancel';
+            btnCancelar.textContent = 'Cancelar';
+
+            btnCancelar.addEventListener('click', e => {
+                modal.classList.remove('show');
+            });
+
+            const btnOk = document.createElement('button');
+            btnOk.className = 'btn btn-ok';
+            btnOk.textContent = 'OK';
+
+            btnOk.addEventListener('click', e => {
+                estado.usuarioEliminado = usuario.id;
+
+                realizarPeticion(
+                    'delete',
+                    `https://jsonplaceholder.typicode.com/users/${usuario.id}`,
+                    eliminarUsuario,
+                    handleError
+                );
+
+                modal.classList.remove('show');
+            });
+
+            modalContenido.append(btnCancelar, btnOk)
+
+            modal.classList.add('show');
+        }
+
+
+        function mostrarUsuario(usuario) {
+            const article = document.createElement('article');
+            article.className = 'usuario';
+            article.id = `usuario-${usuario.id}`;
+
+            article.innerHTML = `
+                <h2>${usuario.name}</h2>
+                <ul>
+                    <li>
+                        <span class="negrita">Email:</span> ${usuario.email}
+                    </li>
+                    <li>
+                        <span class="negrita">Telefono:</span> ${usuario.phone}
+                    </li>
+                    <li>
+                        <span class="negrita">Web:</span> ${usuario.website}
+                    </li>
+                </ul>
+            `;
+
+            const btnModificar = document.createElement('button');
+            btnModificar.className = 'btn btn-ok';
+            btnModificar.textContent = 'Modificar';
+
+            btnModificar.addEventListener('click', e => {
+                cambiarURL(`/modificar/${usuario.id}`, 'Modificar');
+            });
+
+            const btnEliminar = document.createElement('button');
+            btnEliminar.className = 'btn btn-cancel';
+            btnEliminar.textContent = 'Eliminar';
+
+            btnEliminar.addEventListener('click', handleEliminar);
+
+            article.append(btnModificar, btnEliminar);
+
+            listadoUsuarios.append(article);            
+        }
+
+        close.addEventListener('click', ocultarModal);
+        background.addEventListener('click', ocultarModal);
+        btnCrear.addEventListener('click', e => {
+            cambiarURL('/crear', 'Crear');
+        });
+        
+        btnCancelar.addEventListener('click', () => {
+            cambiarURL('/home', 'Home');
+        });
+        
+        btnGuardar.addEventListener('click', e => {
+            const pathname = location.pathname.split('/');
+            const metodo = pathname[1] === 'crear' ? 'post' : 'put';
+            let url = 'https://jsonplaceholder.typicode.com/users'
+
+            if (pathname[1] === 'modificar') {
+                url += `/${pathname[2]}`;
+            }
+
+            realizarPeticion(
+                metodo,
+                url,
+                () => {
+                    cambiarURL('/home', 'Home');
+                },
+                handleError,
+                {
+                    name: nombre.value,
+                    email: email.value,
+                    phone: telefono.value,
+                    website: web.value
+                }
+            );
+        });
+
+        function cambiarURL(url, title) {
+            history.pushState(null, title, url);
+            mostrarOcultar();
+        }
+
+        window.addEventListener('popstate', mostrarOcultar);
+
+        if (location.pathname === '/') {
+            cambiarURL('/home', 'Home');
+        } else {
+            cambiarURL('/home', 'Home');
+            mostrarOcultar();
+        }
+
+    </script>
+</body>
+</html>
