@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 10 - Eje 02</title>
+    <style>
+        .cuadrado, .circulo {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            margin: 10px;
+        }
+
+        .circulo {
+            border-radius: 50%;
+        }
+
+        #items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #zonas {
+            border: 1px solid black;
+            padding: 40px;
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 40px;
+        }
+
+        #cuadrados, #circulos {
+            border: 1px solid black;
+            width: 30%;
+            min-height: 300px;
+        }
+
+        #circulos {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="items">
+        <div draggable="true" id="circulo-1" class="circulo" style="background-color: rgba(255, 0, 0, 0.5);">1</div>
+        <div draggable="true" id="cuadrado-2" class="cuadrado" style="background-color: rgba(0, 255, 0, 0.5);">2</div>
+        <div draggable="true" id="cuadrado-3" class="cuadrado" style="background-color: rgba(0, 0, 255, 0.5);">3</div>
+        <div draggable="true" id="cuadrado-5" class="cuadrado" style="background-color: rgba(255, 0, 255, 0.5);">5</div>
+        <div draggable="true" id="circulo-2" class="circulo" style="background-color: rgba(0, 255, 0, 0.5);">2</div>
+        <div draggable="true" id="cuadrado-6" class="cuadrado" style="background-color: rgba(0, 255, 255, 0.5);">6</div>
+        <div draggable="true" id="circulo-3" class="circulo" style="background-color: rgba(0, 0, 255, 0.5);">3</div>
+        <div draggable="true" id="circulo-4" class="circulo" style="background-color: rgba(255, 255, 0, 0.5);">4</div>
+        <div draggable="true" id="cuadrado-4" class="cuadrado" style="background-color: rgba(255, 255, 0, 0.5);">4</div>
+        <div draggable="true" id="circulo-5" class="circulo" style="background-color: rgba(255, 0, 255, 0.5);">5</div>
+        <div draggable="true" id="circulo-6" class="circulo" style="background-color: rgba(0, 255, 255, 0.5);">6</div>
+        <div draggable="true" id="cuadrado-1" class="cuadrado" style="background-color: rgba(255, 0, 0, 0.5);">1</div>
+    </div>
+
+    <div id="zonas">
+        <div id="cuadrados"></div>
+
+        <div id="circulos"></div>
+    </div>
+
+
+    <script>
+        const zonas = document.getElementById('zonas');
+        const items = document.getElementById('items');
+
+
+        items.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', e.target.id);
+        });
+
+
+        zonas.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
+
+        zonas.addEventListener('drop', e => {
+            console.log(e.target)
+            if (e.target.id !== 'zonas') {
+                const id = e.dataTransfer.getData('text/plain');
+                const hijo = document.getElementById(id);
+                // cuadrado-x --> ['cuadrado', 'x']
+                // circulo-x ---> ['circulo', 'x']
+                const tipo = id.split('-')[0];
+
+                if (`${tipo}s` === e.target.id) {
+                    e.target.appendChild(hijo);
+                } else if (`${tipo}s` === e.target.parentNode.id) {
+                    e.target.parentNode.appendChild(hijo);
+                }
+            }
+        });
+
+
+    </script>
+</body>
+</html>
