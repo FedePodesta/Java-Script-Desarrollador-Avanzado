@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #base {
+            box-sizing: border-box;
+            width: 100%;
+            border: 1px solid black;
+            padding: 4px;
+            height: 50px;
+            margin: 10px 0;
+        }
+
+        #barra {
+            width: 0%;
+            background-color: red;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <p id="parrafo">0%</p>
+    <progress id="progress" max="100" value="0"></progress>
+    <div id="base">
+        <div id="barra"></div>
+    </div>
+    <!-- <img src="send/fuego.jpg"> -->
+
+    <script>
+        const parrafo = document.getElementById('parrafo');
+        const progress = document.getElementById('progress');
+        const base = document.getElementById('base');
+        const barra = document.getElementById('barra');
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('get', 'send/dragon.jpg');
+
+        xhr.responseType = 'blob';
+
+        let archivo;
+
+        xhr.addEventListener('load', e => {
+            archivo = xhr.response;
+
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(xhr.response); 
+            img.alt = 'alternativo';
+
+            img.addEventListener('load', e => {
+                URL.revokeObjectURL(img.src);
+            });
+
+            document.body.appendChild(img);
+        });
+
+        xhr.addEventListener('progress', e => {
+            if (e.lengthComputable) {
+                const porc = Math.floor(e.loaded * 100 / e.total);
+
+                parrafo.textContent = `${porc}%`;
+                progress.value = porc;
+                barra.style.width = `${porc}%`;
+
+                if (porc === 50) {
+                    barra.style.backgroundColor = 'blue';
+                }
+
+                if (porc === 75) {
+                    barra.style.backgroundColor = 'green';
+                }
+
+                if (porc === 100) {
+                    parrafo.style.display = 'none';
+                    progress.style.display = 'none';
+                    base.style.display = 'none';
+                }
+            }
+        });
+
+        xhr.addEventListener('error', e => {
+            console.log('error', e);
+        });
+
+        xhr.send();
+    </script>
+</body>
+</html>

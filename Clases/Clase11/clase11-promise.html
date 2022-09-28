@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 11 - Promise</title>
+</head>
+<body>
+    
+    <script>
+        const p = new Promise((resolve, reject) => {
+            // resolve('valor'); // se resuelve con un valor
+            // reject('error'); // la razon del rechazo
+
+            // setTimeout(() => {
+            //     reject([1, 3, 4, 5]);
+            // }, 3000);
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('get', 'https://jsonplaceholder.typicode.com/users');
+
+            xhr.responseType = 'json';
+
+            xhr.addEventListener('load', e => {
+                if (xhr.status >= 200 && xhr.status <= 299) {
+                    console.log('LOAD');
+                    resolve(xhr.response);
+                    // reject('Error Load');
+                } else {
+                    console.log('LOAD ERROR');
+                    reject(`Error: ${xhr.status}`);
+                }
+            });
+
+            xhr.addEventListener('error', e => {
+                console.log('ERROR');
+                reject('Error');
+            });
+
+            xhr.send();
+        });
+
+        p
+            .then(datos => {
+                console.log('THEN');
+                console.log('datos', datos);
+            })
+            .catch(error => {
+                console.log('CATCH');
+                console.error('Error: ', error);
+            })
+            .finally(() => {
+                console.log('FIN');
+            });
+    </script>
+</body>
+</html>

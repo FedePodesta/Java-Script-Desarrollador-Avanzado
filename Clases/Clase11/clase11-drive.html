@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 11</title>
+    <style>
+        #drive {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 255, 0, 0.5);
+            transition: 1s;
+        }
+    </style>
+</head>
+<body>
+    <div id="drive"></div>
+    
+    <script>
+        const drive = document.getElementById('drive');
+
+        drive.addEventListener('dragenter', e => {
+            drive.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+        });
+
+        drive.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
+
+        drive.addEventListener('dragleave', e => {
+            drive.style.backgroundColor = 'rgba(0, 255, 0, 0.5)';
+        });
+
+        drive.addEventListener('drop', e => {
+            e.preventDefault();
+
+            drive.style.backgroundColor = 'rgba(0, 255, 0, 0.5)';
+            
+            const archivos = new FormData();
+            const cantidad = e.dataTransfer.files.length;
+
+            for (let i = 0; i < cantidad; i++) {
+                archivos.append('upload[]', e.dataTransfer.files[i]);
+            }
+            
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('post', 'upload.php');
+
+            xhr.addEventListener('load', e => {
+                console.log('load', xhr.response);
+            });
+
+            xhr.addEventListener('error', e => {
+                console.log('error', e);
+            });
+
+            xhr.send(archivos);
+        });
+    </script>
+</body>
+</html>
