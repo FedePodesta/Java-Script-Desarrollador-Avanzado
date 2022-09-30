@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 12 - Eje 01</title>
+    <style>
+        .lds-hourglass {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .lds-hourglass:after {
+            content: " ";
+            display: block;
+            border-radius: 50%;
+            width: 0;
+            height: 0;
+            margin: 8px;
+            box-sizing: border-box;
+            border: 32px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: lds-hourglass 1.2s infinite;
+        }
+        @keyframes lds-hourglass {
+            0% {
+                transform: rotate(0);
+                animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+            50% {
+                transform: rotate(900deg);
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+            100% {
+                transform: rotate(1800deg);
+            }
+        }
+
+        .todo {
+            border: 1px solid black;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btns {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            border: none;
+            height: 30px;
+            border-radius: 15px;
+            width: 150px;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+
+        .btn-red {
+            background-color: rgb(238, 151, 151);
+        }
+
+        .btn-green {
+            background-color: rgb(157, 228, 157);
+        }
+
+        .btn-blue {
+            background-color: rgb(202, 202, 255);
+        }
+
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #loader .lds-hourglass {
+            position: fixed;
+            top: calc(50% - 40px);
+            left: calc(50% - 40px);
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .selected {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="btns">
+        <button id="btn-todo" class="btn btn-red">Por Hacer</button>
+        <button id="btn-completed" class="btn btn-green">Completados</button>
+        <button id="btn-all" class="btn btn-blue selected">Todos</button>
+    </div>
+
+    <div id="todo-list"></div>
+
+    <div id="loader">
+        <div class="lds-hourglass"></div>
+    </div>
+    
+    <script>
+        const todoList = document.getElementById('todo-list');
+        const btnTodo = document.getElementById('btn-todo');
+        const btnCompleted = document.getElementById('btn-completed');
+        const btnAll = document.getElementById('btn-all');
+        const loader = document.getElementById('loader');
+
+        function showLoader(show) {
+            if (show) {
+                loader.classList.add('show');
+            } else {
+                loader.classList.remove('show');
+            }
+        }
+
+        function handleError(error) {
+            console.error(error)
+        }
+
+        function updateTodo(todo, completed) {
+            showLoader(true);
+
+            fetch(`https://jsonplaceholder.typicode.com/todos/${todo.id}`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...todo,
+                    completed // completed: completed
+                })
+            })
+                .then(res => res.json())
+                .then(() => { console.log('updated!'); })
+                .catch(handleError)
+                .finally(() => showLoader(false));
+        }
+
+        function mostrarTodos(todos) {
+            todoList.innerHTML = '';
+
+            todos.forEach(todo => {
+                const div = document.createElement('div');
+                div.className = 'todo';
+
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.id = `todo-${todo.id}`;
+                input.checked = todo.completed;
+
+                input.addEventListener('change', e => {
+                    updateTodo(todo, input.checked);
+                })
+
+                const label = document.createElement('label');
+                label.textContent = todo.title;
+                label.htmlFor = `todo-${todo.id}`;
+
+                div.append(input, label);
+
+                todoList.append(div);
+            });
+        }
+
+        function marcarBoton(type) {
+            btnTodo.classList.remove('selected');
+            btnCompleted.classList.remove('selected');
+            btnAll.classList.remove('selected');
+
+            if (type === 'todo') {
+                btnTodo.classList.add('selected');
+            } else if (type === 'completed') {
+                btnCompleted.classList.add('selected');
+            } else {
+                btnAll.classList.add('selected');
+            }
+        }
+
+        function handleClickTodo() {
+            marcarBoton('todo');
+            getTodos('completed=false');
+        }
+
+        function handleClickCompleted() {
+            marcarBoton('completed');
+            getTodos('completed=true');
+        }
+
+        function handleClickAll() {
+            marcarBoton('all');
+            getTodos();
+        }
+
+        function getTodos(filtro) {
+            let baseURL = 'https://jsonplaceholder.typicode.com/todos';
+
+            if (filtro) {
+                baseURL += `?${filtro}`;
+            }
+
+            showLoader(true);
+
+            fetch(baseURL)
+                .then(res => {
+                    if (res.ok) {
+                        return res.json()
+                    } else {
+                        throw new Error('error')
+                        // return Promise.reject('error');
+                    }
+                })
+                .then(mostrarTodos)
+                .catch(handleError)
+                .finally(() => showLoader(false));
+        }
+
+        btnTodo.addEventListener('click', handleClickTodo);
+        btnCompleted.addEventListener('click', handleClickCompleted);
+        btnAll.addEventListener('click', handleClickAll);
+        
+        getTodos();
+
+        // fetch('url/id',{
+        //     method: 'delete'
+        // })
+    </script>
+</body>
+</html>
