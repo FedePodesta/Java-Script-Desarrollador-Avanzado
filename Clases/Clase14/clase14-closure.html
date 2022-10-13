@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 14 - Closure</title>
+</head>
+<body>
+    
+    <script>
+        function mostrarNumero (i) {
+            return function () {
+                alert(i);
+            }
+        }
+
+        for (var i = 1; i < 11; i++) {
+            var boton = document.createElement('button');
+            boton.textContent = i;
+            boton.addEventListener('click', mostrarNumero(i));
+            document.body.append(boton);
+        }
+
+        // function multiplicar(a, b) {
+        //     return a * b;
+        // }
+
+        // function multiplicarPorDos(b) {
+        //     return 2 * b;
+        // }
+
+        // function crearMultiplicar(a) {
+        //     return function (b) {
+        //         return a * b;
+        //     }
+        // }
+
+        // const multiplicarPorCinco = crearMultiplicar(5);
+
+        // console.log('2 * 5 es', multiplicarPorDos(5));
+
+
+
+        // function saludar(nombre) {
+        //     const apellido = 'a'
+        //     console.log(nombre, apellido);
+
+        //     return function () {
+        //         console.log('EL nombre es: ', nombre, ' y el apellido es: ', apellido)
+        //     }
+        // }
+    </script>
+</body>
+</html>

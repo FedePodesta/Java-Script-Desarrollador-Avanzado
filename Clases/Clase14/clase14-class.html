@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 14</title>
+</head>
+<body>
+    
+    <script>
+        // function Persona(n, a) {
+        //     this.nombre = n;
+        //     this.apellido = a;
+        // }
+
+        // Persona.prototype.saludar = function () {
+        //     console.log(`Hola mi nombre es ${this.nombre} ${this.apellido}`);
+        // }
+
+        // function Empleado(nombre, apellido, nroLeg) {
+        //     Persona.call(this, nombre, apellido);
+        //     this.nroLeg = nroLeg;
+        // }
+
+        // Empleado.prototype = Object.create(Persona.prototype);
+        // Empleado.prototype.constructor = Empleado;
+
+        // Empleado.prototype.trabajar = function () {
+        //     console.log('Trabajando...');
+        // }
+
+        class Persona {
+            constructor(nombre, apellido) {
+                this.nombre = nombre;
+                this.apellido = apellido;
+            }
+
+            saludar () {
+                console.log(`Hola mi nombre es ${this.nombre} ${this.apellido}`);
+            }
+        }
+
+        class Empleado extends Persona {
+            constructor(nombre, apellido, nroLeg) {
+                super(nombre, apellido);
+                this.nroLeg = nroLeg;
+            }
+
+            trabajar() {
+                console.log('Trabajando...');
+            }
+        }
+
+        const e = new Empleado('Nombre', 'Apellido', 123);
+        console.log(e);
+        e.trabajar();
+        e.saludar();
+    </script>
+</body>
+</html>

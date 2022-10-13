@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 13</title>
+</head>
+<body>
+    
+    <script>
+        // function crearPersona(n, a) {
+        //     const o = {};
+
+        //     o.nombre = n;
+        //     o.apellido = a;
+
+        //     return o;
+
+        //     // return {
+        //     //     nombre: n,
+        //     //     apellido: a
+        //     // }
+        // }
+
+        // const o = crearPersona('x', 'y');
+        // const o2 = crearPersona('z', '1');
+
+        // function Persona(n, a) {
+        //     // const o = {};
+
+        //     this.nombre = n;
+        //     this.apellido = a;
+
+        //     // return o;
+
+        //     // return {
+        //     //     nombre: n,
+        //     //     apellido: a
+        //     // }
+        // }
+
+        function Persona(n, a, c) {
+            this.nombre = n;
+            this.apellido = a;
+            this.puedeComer = c;
+        }
+
+        Persona.prototype.saludar = function () {
+            console.log(`Hola mi nombre es ${this.nombre} ${this.apellido}`);
+        }
+
+        Persona.prototype.comer = function () {
+            if (this.puedeComer) {
+                console.log('Comiendo...');
+            } else {
+                console.log('No puede comer');
+            }
+        }
+
+        const o = new Persona('x', 'y', true);
+        const o2 = new Persona('z', '1', false);
+
+        console.log(o);
+        console.log(o2);
+    </script>
+</body>
+</html>

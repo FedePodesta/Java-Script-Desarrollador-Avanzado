@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 15 - Patrones de Diseño</title>
+</head>
+<body>
+
+    <!-- <script src="lib.js"></script>
+    <script>
+        console.log('La suma de 10 y 20 es: ', edCalculadora.sumar(10, 20));
+    </script> -->
+
+    <script>
+        class App {
+            constructor(version) {
+                if (App.instancia) {
+                    return App.instancia;
+                }
+
+                this.version = version;
+                this.usuarios = null;
+                this.todos = null;
+
+                App.instancia = this;
+            }
+
+            getUsuarios() {
+                console.log('get usuarios...');
+                this.usuarios = [
+                    {
+                        id: 1,
+                        nombre: 'Carlos'
+                    },
+                    {
+                        id: 2,
+                        nombre: 'Carla'
+                    }
+                ]
+            }
+
+            getTodos() {
+                console.log('get todos...');
+                this.todos = [
+                    {
+                        id: 1,
+                        completed: false,
+                        title: 'A',
+                        userId: 1,
+                    },
+                    {
+                        id: 2,
+                        completed: true,
+                        title: 'B',
+                        userId: 2,
+                    }
+                ]
+            }
+
+            mostrarTodos() {
+                this.todos.forEach(t => {
+                    if (this.usuarios) {
+                        const usuario = this.usuarios.find(u => u.id === t.userId);
+    
+                        if (usuario) {
+                            console.log(`Todo: ${t.id} - ${usuario.nombre} - Estado: ${t.completed ? 'completed' : 'todo'}`);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+
+    <script>
+        // Modulo A
+        (function () {
+            const appA = new App('1.0.0');
+            appA.getUsuarios();
+        })();
+    </script>
+
+    <script>
+        // Modulo B
+        (function () {
+            const appB = new App('2.0.0');
+            appB.getTodos();
+            appB.mostrarTodos();
+        })();
+    </script>
+
+
+    <!-- <script>
+        class App {
+            constructor(version) {
+                if (App.instancia) {
+                    return App.instancia;
+                }
+
+                this.version = version;
+                App.instancia = this;
+            }
+        }
+
+
+        const appA = new App('1.0.0');
+        console.log(appA); // { version: '1.0.0' }
+
+        const appB = new App('2.0.0');
+        console.log(appB); // { version: '1.0.0' }
+
+        console.log(appA === appB); // true
+    </script> -->
+</body>
+</html>

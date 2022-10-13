@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <header>
+        <button class="material-icons">menu</button>
+        <h1>Mi Pagina</h1>
+        <nav id="drawer">
+            <a href="perfil.html">perfil</a>
+            <a href="portfolio.html">portfolio</a>
+            <a href="contacto.html">contacto</a>
+        </nav>
+    </header>
+    <main>
+        <img id="loader" src="loader.gif" alt="loader">
+    </main>
+    <footer>
+        <p>&copy; Copyright 2018</p>
+    </footer>
+    <script>
+        //Seleccion de elementos globales
+        let menu = document.querySelector(".material-icons")
+		let drawer = document.querySelector("#drawer")
+        let links = document.querySelectorAll("a")
+        let loader = document.querySelector("img")
+        
+        if (loader.complete) {
+            ajax("home.html","get",function(data){
+                render("main",data)
+            },true)
+        }else{
+            loader.addEventListener("load",function(e){
+                console.log("Loaded!")
+            })
+        }
+
+        //Animacion del drawer
+		menu.addEventListener("click",function(e){
+			if (drawer.style.left) {
+				drawer.style.left = ''
+			}else{
+				drawer.style.left = '0px'
+			}
+		})
+        //Pedidos de ajax
+        // links.forEach(function(link){
+        //     link.addEventListener("click",function(e){
+        //         e.preventDefault();
+        //         drawer.style.left = ''
+        //         ajax(e.target.href,"get",function(data){
+        //             render("main",data)
+        //         })
+        //     })
+        // })
+        //Funciones Utilitarias
+        /*
+        *@param url       String   : La url donde hacemos el pedido
+        *@param metodo    String   : El metodo HTTP del pedido
+        *@param callback  Function : La funcion a ejecutar en el evento load 
+        */
+        // function ajax(url,metodo,callback){
+        //     let xhr = new XMLHttpRequest
+        //     xhr.open(metodo,url)
+        //     xhr.addEventListener("load",function(){
+        //         if(xhr.status==200){
+        //             callback(xhr.response)
+        //         }
+        //     })
+        //     xhr.send()
+        // }
+        /*
+        *@param selector    String : El selector donde se le hara render a la informacion
+        *@param data        String : La informacion para mostrar
+        */
+        function render(selector,data){
+            document.querySelector(selector).innerHTML = data
+        }
+
+        //Continuando con la pagina dinamica que habiamos construido en la clase anterior vamos a intentar controlar el historial del cliente para poder simular una navegacion completa
+        //1) Modificar el callback de los clicks de cada link para que ademas se cree un nuevo punto en el historial del usuario usando el texto de cada link como nueva url
+        // links.forEach(function(link){
+        //     link.addEventListener("click",function(e){
+        //         e.preventDefault();
+        //         drawer.style.left = ''
+        //         window.history.pushState(null,"",e.target.innerText)
+        //         ajax(e.target.href,"get",function(data){
+        //             render("main",data)
+        //         })
+        //     })
+        // })
+        //2)Asignarle a window un evento de popstate para que dentro de su callback podamos volver a solicitar el contenido de la url reflejada. Podemos usar el string ubicado en window.location.pathname que nos da nuestra URL generada en el paso anterior
+        // window.addEventListener("popstate",function(e){
+        //     let url = window.location.pathname.split("/")[1]
+        //     ajax(url+".html","get",function(data){
+        //         render("main",data)
+        //     })
+        // })
+        //3)Cada vez que se modifique el historial, se debe guardar en su estado la respuesta del pedido dentro de un objeto bajo una propiedad llamada template y la url que le corresponda bajo una propiedad llamada url. Podemos bajar el pushState al evento load para tener acceso a la respuesta de la solicitud (*Podemos tener comportamiento erratico) . La funcion ajax va a recibir entonces un cuarto parametro booleano para saber si tiene que modificar el historial o no. 
+        // links.forEach(function(link){
+        //     link.addEventListener("click",function(e){
+        //         e.preventDefault();
+        //         drawer.style.left = ''
+        //         //window.history.pushState(null,"",e.target.innerText)
+        //         ajax(e.target.innerText+".html","get",function(data){
+        //             render("main",data)
+        //         })
+        //     })
+        // })
+        function ajax(url,metodo,callback,historial){
+            let xhr = new XMLHttpRequest
+            xhr.open(metodo,url)
+            xhr.addEventListener("load",function(){
+                if(xhr.status==200){
+                    if(historial){
+                        window.history.pushState({
+                            url : url.split(".")[0],
+                            template : xhr.response
+                        },"",url.split(".")[0])
+                    }
+                    callback(xhr.response)
+                }
+            })
+            xhr.send()
+        }
+        //4)En caso que nos quede un comportamiento erratico dado que estamos ejecutando una funcion usando la url antes de que cambie y que de hecho si observamos el objeto state del historial tampoco corresponde al estado anterior correcto podemos dejar de ejecutar ajax y simplemente hacer render del contenido de nuestro template guardado en el historial
+        window.addEventListener("popstate",function(e){
+            console.log(e.state)
+            render("main",e.state.template)
+        })
+        //5)Refactorizar la funcion callback de ajax para que ademas pueda ejecutar una funcion llamada portfolioLoad. La misma debera ser capaz de reconocer si portfolio es la pagina que se cargo y si lo fue, hara un pedido por ajax a la API de imagenes https://dog.ceo/api/breeds/image/random la cual nos devolvera un JSON con la url de una imagen de perros! Estas imagenes vamos a usarlas como elementos nuevos dentro de cada <article> que se encuentre en la seccion de portfolio
+        links.forEach(function(link){
+            link.addEventListener("click",function(e){
+                e.preventDefault();
+                drawer.style.left = ''
+                ajax(e.target.innerText+".html","get",function(data){
+                    render("main",data)
+                    portfolioLoad()
+                },true)
+            })
+        })
+        function portfolioLoad(){
+            let articulos = document.querySelectorAll("article")
+            if(articulos.length){
+                articulos.forEach(function(articulo){
+                    ajax("https://dog.ceo/api/breeds/image/random","get",function(data){
+                        let data_parseada = JSON.parse(data)
+                        let url = data_parseada.message
+                        let img = document.createElement("img")
+                        img.src = url
+                        articulo.children[0].appendChild(img)
+                    },false)
+                })
+            }
+        }
+        //Bonus
+        //6)Asignarles un evento de click a cada item dentro de la seccion portfolio para que puedan cargar su propio contenido por AJAX. La seccion de "Listado de usuarios" debe pedir un archivo llamado listado.html y la seccion "Traduccion de palabras" debe cargar un archivo llamado traduccion.html
+        // document.addEventListener("click",function(e){
+        //     let elemento;
+        //     if(e.target.tagName.toLowerCase() == "article"){
+        //         elemento = e.target
+        //     }
+        //     if(e.target.tagName.toLowerCase() == "footer" || e.target.tagName.toLowerCase() == "img"){
+        //         if(e.target.parentNode.parentNode.tagName.toLowerCase() == "article"){
+        //             elemento = e.target.parentNode.parentNode
+        //         }
+        //     }
+        //     if(elemento){
+        //         switch(elemento.id){
+        //             case "listado":
+        //                 ajax("listado.html","get",function(data){
+        //                     render("main",data)
+        //                 },true)
+        //             break;
+        //             case "traduccion":
+        //                 ajax("traduccion.html","get",function(data){
+        //                     render("main",data)
+        //                 },true)
+        //             break;
+        //         }
+        //     }
+        // })
+        //7)Refactorizar el callback del punto anterior para que tambien se le pueda asignar un click dinamico al <button> del template de listado.html . El callback de su click debera ir a pedir por GET la siguiente URL : https://jsonplaceholder.typicode.com/users y mostrar un <li> con el nombre de cada usuario dentro del <ul> del mismo template.
+        document.addEventListener("click",function(e){
+            let elemento;
+            if(e.target.tagName.toLowerCase() == "button"){
+                elemento = e.target
+            }else{
+                if(e.target.tagName.toLowerCase() == "article"){
+                    elemento = e.target
+                }
+                if(e.target.tagName.toLowerCase() == "footer" || e.target.tagName.toLowerCase() == "img"){
+                    if(e.target.parentNode.parentNode.tagName.toLowerCase() == "article"){
+                        elemento = e.target.parentNode.parentNode
+                    }
+                }
+            }
+            if(elemento){
+                switch(elemento.id){
+                    case "listado":
+                        ajax("listado.html","get",function(data){
+                            render("main",data)
+                        },true)
+                    break;
+                    case "traduccion":
+                        ajax("traduccion.html","get",function(data){
+                            render("main",data)
+                        },true)
+                    break;
+                    case "usuarios":
+                        ajax("http://jsonplaceholder.typicode.com/users","get",function(data){
+                            let usuarios = JSON.parse(data)
+                            let fragmento = document.createDocumentFragment()
+                            usuarios.forEach(function(usuario){
+                                let li = document.createElement("li")
+                                li.innerText = usuario.name
+                                fragmento.appendChild(li)
+                            })
+                            document.querySelector("#listado-usuarios").appendChild(fragmento)
+                        },false)
+                    break;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
