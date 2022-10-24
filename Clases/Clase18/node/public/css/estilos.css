@@ -1,0 +1,92 @@
+body {
+  font-family: Arial, Verdana, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+#header {
+  position: relative;
+  background-color: black;
+  line-height: 100px;
+  color: orange;
+  padding: 0 40px;
+}
+
+#header #logout {
+  position: absolute;
+  top: 0;
+  right: 40px;
+  background: white;
+  padding: 0 10px;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#header #logout:hover {
+  background-color: orange;
+}
+
+#form {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#form #mensaje {
+  color: red;
+  font-weight: bold;
+  background-color: pink;
+  padding: 10px;
+  display: none;
+}
+
+#form label {
+  display: inline-block;
+  width: 80px;
+}
+
+#form div {
+  margin-bottom: 10px;
+}
+
+#form input[type="submit"] {
+  display: block;
+  border-radius: 4px;
+  background-color: green;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  width: 260px;
+  padding: 5px;
+}
+
+.post {
+  border: 5px solid orange;
+  padding: 10px 20px;
+  margin: 20px;
+}
+
+.post h2 {
+  background-color: black;
+  color: white;
+  padding: 10px;
+}
+
+.post p {
+  padding-left: 20px;
+}
+
+.post .comentarios {
+  display: block;
+  cursor: pointer;
+  background-color: blue;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.post .comentarios:hover {
+  background-color: black;
+  color: orange;
+}

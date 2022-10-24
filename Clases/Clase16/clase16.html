@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 16 - Pub / Sub</title>
+</head>
+<body>
+    <script>
+        // var EventBus = {
+        //     topics: {},
+        //     suscribir: function(topic, listener) {
+        //         //crea el tópico si aun no existe
+        //         if(!this.topics[topic]) this.topics[topic] = [];
+        //         //Agrega un listener
+        //         this.topics[topic].push(listener);
+        //     },
+        //     publicar: function(topic, data) {
+        //         // return si el evento no existe o no tiene listeners
+        //         if(!this.topics[topic] || this.topics[topic].length < 1)
+        //         return;
+        //         //Envía el evento a todos los listeners
+        //         this.topics[topic].forEach(function(listener) {
+        //             listener(data);
+        //         });
+        //     }
+        // };
+
+        // function EventBus() {}
+
+        // EventBus.suscribir = function (topic, listener) {
+        //     if(!this.topics[topic]) this.topics[topic] = [];
+        //     this.topics[topic].push(listener);
+        // }
+
+        // EventBus.publicar = function (topic, data) {
+        //     if(!this.topics[topic] || this.topics[topic].length < 1)
+        //     return;
+        //     this.topics[topic].forEach(function(listener) {
+        //         listener(data);
+        //     });
+        // }
+
+        class EventBus {
+            static topics = {};
+
+            static suscribir(topic, listener) {
+                if(!this.topics[topic]) this.topics[topic] = [];
+                this.topics[topic].push(listener);
+            }
+
+            static publicar(topic, data) {
+                if(!this.topics[topic] || this.topics[topic].length < 1)
+                return;
+                this.topics[topic].forEach(function(listener) {
+                    listener(data);
+                });
+            }
+        }
+
+        class Mailer {
+            constructor() {
+                EventBus.suscribir('order/new', this.enviarMailDeCompra);
+            }
+
+            enviarMailDeCompra(userEmail) {
+                console.log("Email enviado a " + userEmail);
+            }
+        }
+
+        class Printer {
+            constructor() {
+                EventBus.suscribir('order/new', this.imprimirOrden)
+            }
+
+            imprimirOrden(mensaje) {
+                console.log('Print: ', mensaje);
+            }
+        }
+
+        class Orden {
+            constructor(params) {
+                this.params = params;
+            }
+
+            guardarOrden() {
+                EventBus.publicar('order/new', this.params.userEmail);
+            }
+        }
+
+        const mailer = new Mailer();
+        const printer = new Printer();
+        const order = new Orden({userEmail: 'juan@gmail.com'});
+        order.guardarOrden(); // "Email enviado a juan@gmail.com"
+    </script>
+</body>
+</html>

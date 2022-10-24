@@ -1,0 +1,244 @@
+<html lang="es">
+  <head>
+    <title>API</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/estilos.css">
+  </head>
+  <body>
+    
+
+    <script>
+      class Nodo {
+        static add(element) {
+          const div = document.createElement('div');
+          div.innerHTML = element.render();
+          document.body.appendChild(div);
+          element.live();
+          return div;
+        }
+
+        static render(html, live) {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          document.body.appendChild(div);
+
+          if (live) {
+            live();
+          }
+
+          return div;
+        }
+      }
+
+      class Login {
+        constructor(setLogin) {
+          this.setLogin = setLogin;
+        }
+
+        doLogin() {
+
+          const data = {
+            usuario: this.usuario.value,
+            clave: this.clave.value
+          }
+
+          fetch('/api/login', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(data => {
+              return data.json();
+            })
+            .then(data => {
+              this.setLogin(data);
+            })
+            .catch(e => {
+              this.mensaje.textContent = 'Usuario y/o clave incorrectos';
+              this.mensaje.style.display = 'block';
+            })
+        }
+
+        live() {
+          this.form = document.querySelector('#form');
+          this.usuario = document.querySelector('#usuario');
+          this.clave = document.querySelector('#clave');
+          this.mensaje = document.querySelector('#mensaje');
+
+          this.form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            if (this.usuario.value && this.clave.value) {
+              this.doLogin();
+            } else {
+              this.mensaje.textContent = 'Ingrese los campos';
+              this.mensaje.style.display = 'block';
+            }
+          });
+        }
+
+        render() {
+          return `
+            <form action="" method="post" id="form">
+              <div id="mensaje"></div>
+              <div>
+                <label for="usuario">Usuario: </label>
+                <input type="text" id="usuario" name="usuario">
+              </div>
+              <div>
+                <label for="clave">Clave: </label>
+                <input type="password" id="clave" name="clave">
+              </div>
+              <input type="submit" value="Login">
+            </form>
+          `;
+        }
+      }
+
+      class Post {
+        constructor(userId) {
+          this.userId = userId
+          this.live = this.live.bind(this);
+
+          fetch(`/api/posts?userId=${this.userId}`)
+            .then(data => {
+              return data.json();
+            })
+            .then(data => {
+              this.posts = data
+              this.element = Nodo.render(this.render(), this.live);
+            })
+            .catch(e => {
+              return '';
+            })
+
+        }
+
+        remove() {
+          document.body.removeChild(this.element);
+        }
+
+        live() {
+          this.comentarios = document.querySelectorAll('.comentarios');
+
+          this.comentarios.forEach(comentario => {
+            comentario.addEventListener('click', e => {
+              // fetch(`/api/comments?postid=${e.target.dataset.postid}`)
+              fetch(`/api/comments/${e.target.dataset.postid}`)
+                .then(data => {
+                  return data.json();
+                })
+                .then(data => {
+                  console.log(data);
+                })
+                .catch(e => {
+                  return '';
+                })
+              })
+          });
+        }
+
+        render() {
+          let ren = '';
+          this.posts.forEach(post => {
+          ren += `
+              <article class="post">
+                <h2>${post.titulo}</h2>
+                <p>Usuario: ${post.userId}</p>
+                <p>${post.mensaje}</p>
+                <span class="comentarios" data-postid="${post.id}">Ver comentarios</span>
+              </article>
+            `;
+          });
+          return ren; 
+        }
+      }
+
+      class Header {
+        constructor(setLogout, isLogin) {
+          this.setLogout = setLogout;
+          this.isLogin = isLogin
+        }
+
+        live() {
+          this.logout = document.querySelector('#logout');
+
+          if (!this.isLogin()) {
+            this.logout.style.display = 'none';
+          } else {
+            this.logout.style.display = 'block';
+            this.logout.addEventListener('click', e => {
+              this.setLogout();
+            });
+          }
+          
+        }
+
+        render() {
+          return `
+            <header id="header">
+              Empresa
+
+              <span id="logout">Logout</span>
+            </header>
+          `;
+        }
+
+      }
+      
+      class App {
+        constructor(id) {
+          if (!App.instance) {
+            this.id = id;
+            this.setLogin = this.setLogin.bind(this);
+            this.setLogout = this.setLogout.bind(this);
+            this.isLogin = this.isLogin.bind(this);
+
+            App.instance = this;
+
+            this.headerElement = Nodo.add(new Header(this.setLogout, this.isLogin));
+
+            if (!localStorage.getItem('login')) {
+              this.loginElement = Nodo.add(new Login(this.setLogin));
+            } else {
+              const userId = JSON.parse(localStorage.getItem('login')).id;
+              this.posts = new Post(userId);
+            }
+            
+          }
+
+          return App.instance;
+        }
+
+        refreshHeader() {
+          document.body.removeChild(this.headerElement);
+          this.headerElement = Nodo.add(new Header(this.setLogout, this.isLogin));
+        }
+
+        setLogin(data) {
+          document.body.removeChild(this.loginElement);
+          localStorage.setItem('login', JSON.stringify(data));
+          this.refreshHeader();
+          const userId = JSON.parse(localStorage.getItem('login')).id;
+          this.posts = new Post(userId);
+        }
+
+        setLogout() {
+          localStorage.removeItem('login');
+          this.refreshHeader();
+          this.loginElement = Nodo.add(new Login(this.setLogin));
+          this.posts.remove();
+        }
+
+        isLogin() {
+          return localStorage.getItem('login');
+        }
+      }
+
+      const app = new App();
+
+    </script>
+  </body>
+</html>

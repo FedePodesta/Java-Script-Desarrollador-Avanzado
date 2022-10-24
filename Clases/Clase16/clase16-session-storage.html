@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Storage</title>
+</head>
+<body>
+    <div id="bienvenido">
+        <h1 id="titulo">Bienvenido</h1>
+        <button id="salir">Salir</button>
+    </div>
+    <div id="form">
+        <input type="text" id="nombre">
+        <button id="boton">Guardar</button>
+    </div>
+
+    <script>
+        const bienvenido = document.getElementById('bienvenido');
+        const titulo = document.getElementById('titulo');
+        const form = document.getElementById('form');
+        const nombre = document.getElementById('nombre');
+        const boton = document.getElementById('boton');
+        const salir = document.getElementById('salir');
+
+        function mostrarOcultar () {
+            const nombreStorage = sessionStorage.getItem('nombre');
+
+            if (nombreStorage !== null) {
+                form.style.display = 'none';
+                bienvenido.style.display = 'block';
+                titulo.textContent = `Bienvenido ${nombreStorage}`;
+            } else {
+                form.style.display = 'block';
+                bienvenido.style.display = 'none';
+            }
+        }
+
+        boton.addEventListener('click', e => {
+            sessionStorage.setItem('nombre', nombre.value);
+            mostrarOcultar();
+        });
+
+        salir.addEventListener('click', e => {
+            // sessionStorage.clear();
+            sessionStorage.removeItem('nombre');
+            mostrarOcultar();
+        })
+
+        mostrarOcultar();
+    </script>
+</body>
+</html>

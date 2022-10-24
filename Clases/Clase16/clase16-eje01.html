@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 16 - Pub / Sub</title>
+</head>
+<body>
+    <div id="botones">
+        <button class="boton" data-propiedad="backgroundColor" data-valor="red">Cambiar BackgroundColor (Red)</button>
+
+        <button class="boton" data-propiedad="fontSize" data-valor="48px">Cambiar FontSize (48px)</button>
+
+        <button class="boton" data-propiedad="color" data-valor="yellow">Cambiar Color (Yellow)</button>
+    </div>
+
+    <button id="aplicar">Aplicar</button>
+
+    <h1>Titulo</h1>
+    <h2>Subtitulo</h2>
+    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laudantium deleniti fugit consectetur. Quasi, culpa quidem recusandae, ad voluptas adipisci eligendi commodi, ex cupiditate iure facere! Modi debitis expedita commodi voluptatibus aliquam iusto nihil neque animi. Fuga at ipsam, eius facilis ratione quos suscipit, explicabo voluptatibus quasi consequatur, delectus debitis ullam.</p>
+    
+    <script>
+        class EventBus {
+            static topics = {};
+            
+            static suscribir(topic, id, listener) {
+                if(!this.topics[topic]) this.topics[topic] = [];
+
+                const index = this.topics[topic].findIndex(o => o.id === id);
+
+                if (index === -1) {
+                    this.topics[topic].push({
+                        id,
+                        listener
+                    });
+                } else {
+                    this.topics[topic].splice(index, 1);
+                }
+            }
+
+            static publicar(topic) {
+                if(!this.topics[topic] || this.topics[topic].length < 1)
+                return;
+                this.topics[topic].forEach(o => {
+                    o.listener();
+                });
+
+                this.topics[topic] = [];
+            }
+        }
+
+        const botones = document.getElementById('botones');
+        const aplicar = document.getElementById('aplicar');
+
+        aplicar.addEventListener('click', e => {
+            EventBus.publicar('cambios');
+        })
+
+        botones.addEventListener('click', e => {
+            const t = e.target;
+            if (t.id !== 'botones') {
+                const id = `${t.dataset.propiedad}-${t.dataset.valor}`;
+                EventBus.suscribir('cambios', id, () => {
+                    document.body.style[t.dataset.propiedad] = t.dataset.valor;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
